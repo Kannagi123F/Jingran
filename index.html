@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wuthering Waves Player</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="phone" id="phone">
+  <div class="slides" id="slides"></div>
+  <div class="aura"></div>
+  <div class="flash-wave" id="flash"></div>
+  <div class="lamp" id="lamp"></div>
+  <canvas id="fx"></canvas>
+
+  <div class="ui">
+    <header class="top">
+      <h1 class="logo">
+        <img src="img/Wuthering_Waves_logo.svg" alt="Wuthering Waves">
+      </h1>
+      <div class="dots" id="dots" role="tablist" aria-label="Personajes"></div>
+    </header>
+
+    <section class="player" aria-label="Reproductor de música">
+      <div class="track" id="title">Título</div>
+      <div class="artist" id="artist">Artista</div>
+
+      <div class="bar">
+        <input type="range" id="seek" min="0" max="100" value="0" aria-label="Progreso de la canción">
+        <div class="times"><span id="cur">0:00</span><span id="dur">0:00</span></div>
+      </div>
+
+      <div class="controls">
+        <button id="play" aria-label="Reproducir"><svg viewBox="0 0 24 24" id="icon"><path d="M8 5v14l11-7z"/></svg></button>
+      </div>
+    </section>
+  </div>
+
+  <audio id="audio" loop preload="metadata"></audio>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

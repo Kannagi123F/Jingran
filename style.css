@@ -1,0 +1,206 @@
+:root {
+  --lamp-x: 17%;   /* posición horizontal de la lámpara */
+  --lamp-y: 48%;   /* posición vertical de la lámpara */
+  --teal: #2fe0c4;
+  --teal-deep: #0f7f78;
+  --ink: #04100f;
+  --glass: rgba(4, 22, 21, 0.55);
+  --text: #e8fffb;
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; }
+body {
+  background: #020807;
+  color: var(--text);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  display: flex; justify-content: center; align-items: center;
+}
+
+/* Pantalla tipo móvil con marco verde azulado */
+.phone {
+  position: relative;
+  width: 100%; max-width: 430px;
+  height: 100dvh; max-height: 900px;
+  overflow: hidden;
+  background: var(--ink);
+  touch-action: pan-y; user-select: none; -webkit-user-select: none;
+  border: 3px solid var(--teal);
+  border-radius: 28px;
+  box-shadow:
+    0 0 0 6px rgba(47, 224, 196, 0.12),
+    0 0 28px rgba(47, 224, 196, 0.55),
+    inset 0 0 30px rgba(47, 224, 196, 0.35);
+}
+@media (max-width: 430px) { .phone { border-radius: 0; max-height: none; } }
+
+/* Oscurece abajo para que se lea el reproductor */
+.phone::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(2,12,11,.55) 0%, rgba(2,12,11,0) 22%,
+                    rgba(2,12,11,0) 45%, rgba(2,12,11,.92) 100%);
+}
+canvas#fx { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; pointer-events: none; }
+
+.ui { position: absolute; inset: 0; z-index: 4; display: flex; flex-direction: column;
+      justify-content: space-between; padding: 22px 28px 26px; }
+
+.logo { text-align: center; }
+.logo img { height: 56px; max-width: 80%; width: auto; filter: invert(1) drop-shadow(0 0 8px rgba(47,224,196,.8)); }
+
+.player {
+  background: var(--glass);
+  border: 1px solid rgba(47, 224, 196, 0.5);
+  border-radius: 18px;
+  padding: 12px 16px 10px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 18px rgba(47, 224, 196, 0.25);
+}
+.track { font-size: 1rem; font-weight: 700; letter-spacing: .03em; }
+.artist { font-size: .75rem; opacity: .7; margin-top: 2px; }
+
+.bar { margin-top: 10px; }
+input[type=range] {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 5px; border-radius: 5px;
+  background: linear-gradient(to right, var(--teal) calc(11px + (100% - 22px) * var(--pn, 0)), rgba(255,255,255,.2) calc(11px + (100% - 22px) * var(--pn, 0)));
+  outline-offset: 6px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 22px; height: 26px; border: 0; border-radius: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 26'%3E%3Cpath fill='%232fe0c4' d='M12 1C13 7 19 10 19 18a7 7 0 0 1-14 0c0-4 2-6 3-8 .5 2 1.5 3 2.5 3.5C10 9 10 5 12 1z'/%3E%3Cpath fill='%23e8fffb' d='M12 14c2 2 3 3.5 3 5.5a3 3 0 0 1-6 0c0-1.5 1-2.5 3-5.5z'/%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(0 0 6px #2fe0c4) drop-shadow(0 0 12px rgba(47,224,196,.7));
+}
+input[type=range]::-moz-range-thumb {
+  width: 22px; height: 26px; border: 0; border-radius: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 26'%3E%3Cpath fill='%232fe0c4' d='M12 1C13 7 19 10 19 18a7 7 0 0 1-14 0c0-4 2-6 3-8 .5 2 1.5 3 2.5 3.5C10 9 10 5 12 1z'/%3E%3Cpath fill='%23e8fffb' d='M12 14c2 2 3 3.5 3 5.5a3 3 0 0 1-6 0c0-1.5 1-2.5 3-5.5z'/%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(0 0 6px #2fe0c4) drop-shadow(0 0 12px rgba(47,224,196,.7));
+}
+.times { display: flex; justify-content: space-between; font-size: .7rem; opacity: .7; margin-top: 5px; }
+
+.controls { display: flex; justify-content: center; align-items: center; gap: 22px; margin-top: 4px; }
+button {
+  background: none; border: 0; color: var(--text); cursor: pointer;
+  width: 48px; height: 48px; border-radius: 50%;
+  display: grid; place-items: center;
+}
+button svg { width: 26px; height: 26px; fill: currentColor; }
+button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+#play {
+  width: 50px; height: 50px; background: var(--teal); color: var(--ink);
+  box-shadow: 0 0 20px rgba(47, 224, 196, .7);
+}
+#play svg { width: 24px; height: 24px; }
+
+
+
+
+/* ---------- Efectos de luz ---------- */
+@property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+/* Aura detrás del personaje */
+.aura {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 38%, rgba(47,224,196,.30), transparent 70%),
+    radial-gradient(ellipse 90% 30% at 50% 100%, rgba(47,224,196,.28), transparent 70%);
+  mix-blend-mode: screen;
+  opacity: .6;
+  animation: breathe 4.5s ease-in-out infinite;
+}
+
+/* Destello de choque / resonancia al cambiar de personaje */
+.flash-wave {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: radial-gradient(circle at center, rgba(190, 255, 245, 0.75) 0%, rgba(47, 224, 196, 0.35) 45%, transparent 75%);
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity 0.28s ease-out;
+}
+.flash-wave.active {
+  opacity: 1;
+}
+
+/* Brillo de la lámpara / guantelete */
+.lamp {
+  position: absolute; z-index: 2; pointer-events: none;
+  left: var(--lamp-x); top: var(--lamp-y);
+  width: 190px; height: 190px; transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(190,255,245,.95) 0%, rgba(47,224,196,.55) 25%, rgba(47,224,196,0) 68%);
+  mix-blend-mode: screen;
+  opacity: .55;
+  animation: flicker 2.6s infinite;
+  transition: opacity 0.25s ease;
+}
+.lamp.fading {
+  opacity: 0 !important;
+}
+
+/* Luz que recorre el marco */
+.phone::after {
+  content: ""; position: absolute; inset: -3px; z-index: 5; pointer-events: none;
+  border-radius: inherit; padding: 3px;
+  background: conic-gradient(from var(--ang), transparent 0 72%, rgba(190,255,245,.95) 88%, transparent 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: spin 6s linear infinite;
+}
+
+/* El marco respira */
+.phone { animation: frame 4s ease-in-out infinite; }
+
+/* Más intensidad mientras suena la música */
+.phone.playing .aura { opacity: 1; animation-duration: 2.4s; }
+.phone.playing .lamp { opacity: .95; width: 240px; height: 240px; }
+.phone.playing { animation-duration: 2.4s; }
+
+@keyframes spin { to { --ang: 360deg; } }
+@keyframes breathe { 0%,100% { opacity: .45; } 50% { opacity: .85; } }
+@keyframes flicker {
+  0%,100% { opacity: .55; } 12% { opacity: .75; } 24% { opacity: .5; }
+  40% { opacity: .85; } 58% { opacity: .6; } 78% { opacity: .8; }
+}
+@keyframes frame {
+  0%,100% { box-shadow: 0 0 0 6px rgba(47,224,196,.12), 0 0 22px rgba(47,224,196,.45), inset 0 0 24px rgba(47,224,196,.28); }
+  50%     { box-shadow: 0 0 0 8px rgba(47,224,196,.18), 0 0 46px rgba(47,224,196,.85), inset 0 0 44px rgba(47,224,196,.55); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  canvas#fx { display: none; }
+  .aura, .lamp, .phone, .phone::after { animation: none; }
+}
+
+/* ---------- Personajes con Transición Etérea ---------- */
+.slides { 
+  position: absolute; 
+  inset: 0; 
+  z-index: 0; 
+}
+
+.slide { 
+  position: absolute;
+  inset: 0;
+  background: center top / cover no-repeat;
+  opacity: 0;
+  transform: scale(0.96);
+  filter: blur(8px) brightness(0.6);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.5s ease;
+  pointer-events: none;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px) brightness(1);
+  pointer-events: auto;
+}
+
+.top { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.dots { display: flex; gap: 8px; }
+.dots button {
+  width: 9px; height: 9px; min-width: 0; padding: 0; border-radius: 50%;
+  background: rgba(255,255,255,.35); transition: all .25s;
+}
+.dots button.on { width: 26px; border-radius: 6px; background: var(--teal); box-shadow: 0 0 10px var(--teal); }
